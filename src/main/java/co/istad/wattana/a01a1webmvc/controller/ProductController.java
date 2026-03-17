@@ -5,6 +5,7 @@ import co.istad.wattana.a01a1webmvc.dto.ProductCreateRequest;
 import co.istad.wattana.a01a1webmvc.dto.ProductResponse;
 import co.istad.wattana.a01a1webmvc.dto.UpdateProductRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,11 @@ import java.util.List;
 @Slf4j
 public class ProductController
 {
+    public ProductResponse getProductByCode(@PathVariable String code){
+        log.info("getProductBycode: {}", code);
+        return null;
+    }
+
     @GetMapping
     public List<ProductResponse>  getProducts(
             @RequestParam(required = false, defaultValue = "0") int PageNumber,
@@ -26,6 +32,8 @@ public class ProductController
                 , PageSize);
         return List.of();
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void createNewProduct(
             @RequestBody ProductCreateRequest productCreateRequest
@@ -51,7 +59,7 @@ public class ProductController
         log.info("patchProductRequest :{}", updateProductRequest);
 
     }
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{code}")
     public void deleteProductByCode(@PathVariable  String code){
         log.info("deleteProductByCode :{}", code);
