@@ -1,15 +1,12 @@
 package co.istad.wattana.a01a1webmvc.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-
+import java.util.List;
 
 
 @Getter
@@ -32,5 +29,8 @@ public class Product {
 
     @ManyToOne
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderLine> orderLines;
 
 }

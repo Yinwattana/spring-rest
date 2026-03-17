@@ -1,7 +1,7 @@
 package co.istad.wattana.a01a1webmvc.controller;
 
 
-import co.istad.wattana.a01a1webmvc.dto.ProductCreateRequest;
+import co.istad.wattana.a01a1webmvc.dto.CreateProductRequest;
 import co.istad.wattana.a01a1webmvc.dto.ProductResponse;
 import co.istad.wattana.a01a1webmvc.dto.UpdateProductRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +35,11 @@ public class ProductController
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void createNewProduct(
-            @RequestBody ProductCreateRequest productCreateRequest
+    public ProductResponse createNewProduct(
+            @RequestBody CreateProductRequest productCreateRequest
     ){
         log.info("createProductRequest :{}",productCreateRequest);
+        return null;
     }
 
     @PutMapping("/{code}")
