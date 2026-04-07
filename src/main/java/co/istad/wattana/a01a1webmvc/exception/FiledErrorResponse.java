@@ -1,4 +1,8 @@
 package co.istad.wattana.a01a1webmvc.exception;
 
-public record FiledErrorResponse() {
+
+public record FiledErrorResponse(
+        String field,
+        String reason
+) {
 }

@@ -4,7 +4,10 @@ package co.istad.wattana.a01a1webmvc.controller;
 import co.istad.wattana.a01a1webmvc.dto.CreateProductRequest;
 import co.istad.wattana.a01a1webmvc.dto.ProductResponse;
 import co.istad.wattana.a01a1webmvc.dto.UpdateProductRequest;
+import co.istad.wattana.a01a1webmvc.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,28 +18,32 @@ import java.util.List;
 @Slf4j
 public class ProductController
 {
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
     public ProductResponse getProductByCode(@PathVariable String code){
         log.info("getProductBycode: {}", code);
-        return null;
+        return productService.getProductByCode(code);
     }
 
     @GetMapping
-    public List<ProductResponse>  getProducts(
-            @RequestParam(required = false, defaultValue = "0") int PageNumber,
-            @RequestParam(required = false, defaultValue = "20") int PageSize,
-            @RequestParam(required = false,defaultValue = "")String name
+    public Page<ProductResponse> getProducts(
+            @RequestParam(required = false, defaultValue = "0") int pageNumber,
+            @RequestParam(required = false, defaultValue = "20") int pageSize
     ) {
-        log.info("Page Number :{}, PageSize :{}, name: {}"
-                , name
-                , PageNumber
-                , PageSize);
-        return List.of();
+        log.info("page Number :{}, pageSize :{}",
+                 pageNumber,
+                 pageSize);
+        return productService.getProducts(pageNumber,pageSize);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ProductResponse createNewProduct(
-            @RequestBody CreateProductRequest productCreateRequest
+           @Valid @RequestBody CreateProductRequest productCreateRequest
     ){
         log.info("createProductRequest :{}",productCreateRequest);
         return null;
@@ -53,12 +60,12 @@ public class ProductController
 
 
     @PatchMapping("/{code}")
-    public void patchProductByCode(
+    public ProductResponse patchProductByCode(
             @PathVariable String code,
-            @RequestBody UpdateProductRequest updateProductRequest
+           @Valid @RequestBody UpdateProductRequest updateProductRequest
     ){log.info("patchProductByCode :{}", code);
         log.info("patchProductRequest :{}", updateProductRequest);
-
+        return productService.patchProductByCode(code, updateProductRequest);
     }
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{code}")
